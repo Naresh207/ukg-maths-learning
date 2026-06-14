@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>UKG Maths Learning</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Comic Sans MS, Arial;
+    background:linear-gradient(90deg,#f8c8dc,#a8d8ff,#90ee90);
+}
+
+h1{
+    text-align:center;
+    color:white;
+    font-size:60px;
+}
+
+.container{
+    display:flex;
+}
+
+.sidebar{
+    width:250px;
+    padding:20px;
+}
+
+.sidebar button{
+    width:100%;
+    padding:18px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:15px;
+    background:#6c63ff;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
+.sidebar button:hover{
+    background:#574ee6;
+}
+
+.card{
+    background:white;
+    width:750px;
+    margin:20px auto;
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 0 25px rgba(0,0,0,0.2);
+}
+
+.question{
+    font-size:70px;
+    color:#003366;
+}
+
+input{
+    width:250px;
+    padding:15px;
+    font-size:30px;
+    text-align:center;
+}
+
+.check{
+    background:limegreen;
+    color:white;
+    border:none;
+    padding:15px 30px;
+    font-size:25px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.score{
+    font-size:28px;
+    color:#ff6600;
+    font-weight:bold;
+}
+
+.result{
+    font-size:30px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>🎓 UKG Maths Learning 🌈</h1>
+
+<div style="text-align:center" class="score">
+⭐ Stars: <span id="stars">0</span>
+&nbsp;&nbsp;&nbsp;
+🏆 Score: <span id="score">0</span>
+</div>
+
+<div class="container">
+
+<div class="sidebar">
+
+<button onclick="addition()">➕ Addition</button>
+
+<button onclick="subtraction()">➖ Subtraction</button>
+
+<button onclick="numbers()">🔢 Numbers</button>
+
+<button onclick="counting()">🍎 Counting</button>
+
+<button onclick="games()">🎮 Fun Games</button>
+
+</div>
+
+<div class="card">
+
+<h2 id="title">Addition Practice</h2>
+
+<h1 class="question" id="question"></h1>
+
+<input
+type="number"
+id="answer">
+
+<br><br>
+
+<button
+class="check"
+onclick="checkAnswer()">
+
+Check Answer
+
+</button>
+
+<h2 id="result" class="result"></h2>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+
+let correctAnswer = 0;
+let score = 0;
+let stars = 0;
+let currentMode = "";
+
+function speak(text){
+
+    speechSynthesis.cancel();
+
+    let speech =
+        new SpeechSynthesisUtterance(text);
+
+    speech.rate = 0.8;
+
+    speechSynthesis.speak(speech);
+}
+
+function addition(){
+
+    currentMode = "addition";
+
+    let a =
+    Math.floor(Math.random()*10)+1;
+
+    let b =
+    Math.floor(Math.random()*10)+1;
+
+    correctAnswer = a+b;
+
+    document.getElementById("title").innerHTML =
+    "➕ Addition Practice";
+
+    document.getElementById("question").innerHTML =
+    a + " + " + b + " = ?";
+
+    speak(
+    "What is " + a + " plus " + b
+    );
+
+    clearFields();
+}
+
+function subtraction(){
+
+    currentMode = "subtraction";
+
+    let a =
+    Math.floor(Math.random()*10)+10;
+
+    let b =
+    Math.floor(Math.random()*10)+1;
+
+    correctAnswer = a-b;
+
+    document.getElementById("title").innerHTML =
+    "➖ Subtraction Practice";
+
+    document.getElementById("question").innerHTML =
+    a + " - " + b + " = ?";
+
+    speak(
+    "What is " + a + " minus " + b
+    );
+
+    clearFields();
+}
+
+function counting(){
+
+    currentMode = "counting";
+
+    let count =
+    Math.floor(Math.random()*5)+1;
+
+    correctAnswer = count;
+
+    let apples = "";
+
+    for(let i=0;i<count;i++){
+
+        apples += "🍎 ";
+    }
+
+    document.getElementById("title").innerHTML =
+    "🍎 Counting Game";
+
+    document.getElementById("question").innerHTML =
+    apples;
+
+    speak(
+    "How many apples do you see"
+    );
+
+    clearFields();
+}
+
+function numbers(){
+
+    currentMode = "numbers";
+
+    let num =
+    Math.floor(Math.random()*10)+1;
+
+    correctAnswer = num;
+
+    document.getElementById("title").innerHTML =
+    "🔢 Number Learning";
+
+    document.getElementById("question").innerHTML =
+    "What number is this?<br><br><span style='font-size:120px'>" +
+    num +
+    "</span>";
+
+    speak(
+    "What number is this"
+    );
+
+    clearFields();
+}
+
+function games(){
+
+    currentMode = "games";
+
+    document.getElementById("title").innerHTML =
+    "🎮 Fun Games";
+
+    document.getElementById("question").innerHTML =
+    "🚀 Coming Soon";
+
+    speak(
+    "Fun games coming soon"
+    );
+
+    clearFields();
+}
+
+function clearFields(){
+
+    document.getElementById("answer").value = "";
+
+    document.getElementById("result").innerHTML = "";
+}
+
+function checkAnswer(){
+
+    if(
+    currentMode==="numbers" ||
+    currentMode==="games"
+    ){
+        return;
+    }
+
+    let answer =
+    Number(
+    document.getElementById("answer").value
+    );
+
+    let result =
+    document.getElementById("result");
+
+    if(answer === correctAnswer){
+
+    result.innerHTML =
+    "🎉 Correct Answer! Great Job!";
+
+    result.style.color =
+    "green";
+
+    score++;
+
+    stars++;
+
+    document.getElementById(
+    "score"
+    ).innerHTML = score;
+
+    document.getElementById(
+    "stars"
+    ).innerHTML = stars;
+
+    confetti({
+        particleCount:200,
+        spread:120
+    });
+
+    speak(
+    "Excellent. Great Job."
+    );
+
+    // Prevent repeated clicking
+    document.getElementById(
+    "answer"
+    ).disabled = true;
+
+    document.querySelector(
+    ".check"
+    ).disabled = true;
+
+    // Generate next question automatically
+    setTimeout(function(){
+
+        document.getElementById(
+        "answer"
+        ).disabled = false;
+
+        document.querySelector(
+        ".check"
+        ).disabled = false;
+
+        if(currentMode === "addition"){
+
+            addition();
+
+        }
+        else if(currentMode === "subtraction"){
+
+            subtraction();
+
+        }
+        else if(currentMode === "counting"){
+
+            counting();
+
+        }
+
+    },1500);
+
+}else{
+
+        result.innerHTML =
+        "❌ Try Again";
+
+        result.style.color =
+        "red";
+
+        speak(
+        "Try again"
+        );
+    }
+}
+
+addition();
+
+</script>
+
+</body>
+</html>
